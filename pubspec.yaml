@@ -1,8 +1,8 @@
 name: flutter_gt_push_plugin
 description: A new Flutter plugin with push
-version: 0.0.1
-author:
-homepage:
+version: 0.0.2
+author: dujia <815319775@qq.com>
+homepage: https://github.com/jiaoshenmene/flutter_gt_push_plugin
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

@@ -1,25 +1,57 @@
 package com.mcy.flutter_gt_push_plugin;
 
+import android.app.NotificationManager;
+
+import com.igexin.sdk.PushManager;
+
+import java.util.Map;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
-/** FlutterGtPushPlugin */
+/**
+ * FlutterGtPushPlugin
+ */
 public class FlutterGtPushPlugin implements MethodCallHandler {
-  /** Plugin registration. */
-  public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_gt_push_plugin");
-    channel.setMethodCallHandler(new FlutterGtPushPlugin());
-  }
+    public final Registrar registrar;
+    private final MethodChannel channel;
+    public static FlutterGtPushPlugin instance;
 
-  @Override
-  public void onMethodCall(MethodCall call, Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else {
-      result.notImplemented();
+
+    /**
+     * Plugin registration.
+     */
+    public static void registerWith(Registrar registrar) {
+        final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_gt_push_plugin");
+        channel.setMethodCallHandler(new FlutterGtPushPlugin(registrar, channel));
+        channel.setMethodCallHandler(instance);
+
+        PushManager.getInstance().initialize(registrar.activity().getApplicationContext(),
+                AppPushService.class);
+        PushManager.getInstance().registerPushIntentService(registrar.activity().getApplicationContext(),
+                AppMessageReceiverService.class);
     }
-  }
+
+    public FlutterGtPushPlugin(Registrar registrar, MethodChannel channel) {
+        this.registrar = registrar;
+        this.channel = channel;
+    }
+
+    @Override
+    public void onMethodCall(MethodCall call, Result result) {
+
+        if (call.method.equals("setup")) {
+            result.success(0);
+        } else if (call.method.equals("getRegistrationID")) {
+        } else {
+            result.notImplemented();
+        }
+    }
+
+    public void callbackNotificationOpened(String method, Object data) {
+        channel.invokeMethod(method, data);
+    }
 }

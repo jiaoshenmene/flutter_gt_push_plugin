@@ -16,6 +16,7 @@ A new Flutter plugin with push
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.dependency 'GTSDK'
+  s.static_framework = true
   s.ios.deployment_target = '10.0'
 end
 

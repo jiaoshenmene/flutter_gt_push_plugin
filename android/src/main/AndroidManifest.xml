@@ -1,3 +1,21 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.mcy.flutter_gt_push_plugin">
+
+    <application>
+        <!-- 个推的Service服务,维持长链接接收消息，process 名字不可更改 -->
+        <service
+            android:name=".AppPushService"
+            android:enabled="true"
+            android:exported="true"
+            android:label="AppPushService"
+            android:permission="1000"
+            android:process=":pushservice" />
+        <!-- 个推的消息送达服务，用以接收AppPushService处理后的有效消息接收，类似于之前的广播 -->
+        <service
+            android:name=".AppMessageReceiverService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="AppMessageReceiverService"
+            android:permission="1000" />
+    </application>
 </manifest>

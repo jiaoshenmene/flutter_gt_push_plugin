@@ -2,11 +2,15 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-typedef Future<dynamic> EventHandler(String event);
+import 'flutter_gt_delegate.dart';
+
+typedef Future<dynamic> EventHandler(Map event);
 
 class FlutterGtPushPlugin {
   factory FlutterGtPushPlugin() => _instance;
   final MethodChannel _channel;
+
+  FlutterGtDelegate delegate;
 
   EventHandler _onOpenNotification;
 
@@ -24,8 +28,12 @@ class FlutterGtPushPlugin {
 
   Future<Null> _handleMethod(MethodCall call) async {
     switch (call.method) {
-      case 'onOpenNotification':
-        return _onOpenNotification(call.arguments);
+      case 'GeTuiSdkDidRegisterClient':
+        delegate.GeTuiSdkDidRegisterClient(call.arguments);
+        break;
+      case 'GeTuiSdkDidReceivePayload':
+        delegate.GeTuiSdkDidReceiveMessage(call.arguments);
+        break;
       default:
         throw UnsupportedError('Unrecognized Event');
     }
@@ -38,12 +46,4 @@ class FlutterGtPushPlugin {
     final String regID = await _channel.invokeMethod('getRegistrationID');
     return regID;
   }
-
-//  static const MethodChannel _channel =
-//      const MethodChannel('flutter_gt_push_plugin');
-//
-//  static Future<String> get platformVersion async {
-//    final String version = await _channel.invokeMethod('getPlatformVersion');
-//    return version;
-//  }
 }
