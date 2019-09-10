@@ -18,8 +18,9 @@ class FlutterGtPushPlugin {
     _channel.setMethodCallHandler(_handleMethod);
   }
 
-  setupWithAppID(String appID) {
-    _channel.invokeMethod('setup', appID);
+  setupWithAppID({String appId, String appKey, String appSecret}) {
+    _channel.invokeMethod(
+        'setup', {'appId': appId, 'appKey': appKey, 'appSecret': appSecret});
   }
 
   setOpenNotificationHandler(EventHandler onOpenNotification) {
