@@ -8,6 +8,9 @@ import com.igexin.sdk.message.GTCmdMessage;
 import com.igexin.sdk.message.GTNotificationMessage;
 import com.igexin.sdk.message.GTTransmitMessage;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * @Author: 杜甲 Email:815319775@qq.com
  * @Date: 2019-09-09 15:21
@@ -83,7 +86,12 @@ public class AppMessageReceiverService extends GTIntentService {
      * @param message 新消息
      */
     private void onMessageArrived(String message) {
-        FlutterGtPushPlugin.instance.callbackNotificationOpened(
-                "GeTuiSdkDidReceivePayload", message);
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                FlutterGtPushPlugin.instance.callbackNotificationOpened(
+                        "GeTuiSdkDidReceivePayload", message);
+            }
+        }, 1000);
     }
 }

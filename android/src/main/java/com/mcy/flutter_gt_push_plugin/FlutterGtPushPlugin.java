@@ -20,13 +20,13 @@ public class FlutterGtPushPlugin implements MethodCallHandler {
     private final MethodChannel channel;
     public static FlutterGtPushPlugin instance;
 
-
     /**
      * Plugin registration.
      */
     public static void registerWith(Registrar registrar) {
+   
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_gt_push_plugin");
-        channel.setMethodCallHandler(new FlutterGtPushPlugin(registrar, channel));
+        instance = new FlutterGtPushPlugin(registrar, channel);
         channel.setMethodCallHandler(instance);
 
         PushManager.getInstance().initialize(registrar.activity().getApplicationContext(),

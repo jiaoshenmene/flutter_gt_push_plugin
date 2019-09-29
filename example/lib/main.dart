@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_gt_push_plugin/flutter_gt_push_plugin.dart';
+import 'package:flutter_gt_push_plugin/flutter_gt_delegate.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,6 +14,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
+  GtPushServer _server = GtPushServer();
 
   @override
   void initState() {
@@ -23,16 +25,7 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-//    try {
-//      platformVersion = await FlutterGtPushPlugin.platformVersion;
-//    } on PlatformException {
-//      platformVersion = 'Failed to get platform version.';
-//    }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
@@ -52,5 +45,27 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+}
+
+class GtPushServer implements FlutterGtDelegate {
+  FlutterGtPushPlugin push = FlutterGtPushPlugin();
+
+  GtPushServer() {
+    push.setupWithAppID(
+        appId: 'pakNhnuVra897u9TQOz7G6',
+        appKey: 'bFQzHgCBA17GlCzyEyEy76',
+        appSecret: 'U35S7Mh2uL99zhJAh9G4F3');
+    push.delegate = this;
+  }
+
+  @override
+  void GeTuiSdkDidReceiveMessage(String message) {
+    print('收到个推消息');
+  }
+
+  @override
+  void GeTuiSdkDidRegisterClient(String clientId) {
+    print('注册个推ID $clientId');
   }
 }

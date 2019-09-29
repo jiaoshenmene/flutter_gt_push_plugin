@@ -5,6 +5,8 @@
 .pub/
 
 .idea/
-
-
+android/gradlew
+android/gradlew.bat
+android/gradle/*
 build/
+example/ios/Flutter/*
