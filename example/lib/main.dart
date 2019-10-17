@@ -68,4 +68,10 @@ class GtPushServer implements FlutterGtDelegate {
   void GeTuiSdkDidRegisterClient(String clientId) {
     print('注册个推ID $clientId');
   }
+
+  // iOS VOIP用来消息透传后逻辑处理
+  @override
+  void didReceiveIncomingPushWithPayload(Map payloadMap) {
+    print('iOS didReceiveIncomingPushWithPayload ${payloadMap}');
+  }
 }

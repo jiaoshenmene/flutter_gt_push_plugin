@@ -1,6 +1,8 @@
 package com.mcy.flutter_gt_push_plugin;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.igexin.sdk.GTIntentService;
@@ -10,6 +12,7 @@ import com.igexin.sdk.message.GTTransmitMessage;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.LogRecord;
 
 /**
  * @Author: 杜甲 Email:815319775@qq.com
@@ -70,15 +73,25 @@ public class AppMessageReceiverService extends GTIntentService {
     }
 
 
+    Handler mainHandler = new Handler(Looper.getMainLooper());
+
     /**
      * 当Id初始化的试试
      *
      * @param cid 设备Id
      */
     private void onClientInit(String cid) {
-        FlutterGtPushPlugin.instance.callbackNotificationOpened(
-                "GeTuiSdkDidRegisterClient", cid);
+
+
+        mainHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FlutterGtPushPlugin.instance.callbackNotificationOpened(
+                        "GeTuiSdkDidRegisterClient", cid);
+            }
+        }, 1000);
     }
+
 
     /**
      * 消息达到时
@@ -86,12 +99,14 @@ public class AppMessageReceiverService extends GTIntentService {
      * @param message 新消息
      */
     private void onMessageArrived(String message) {
-        new Timer().schedule(new TimerTask() {
+
+        mainHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 FlutterGtPushPlugin.instance.callbackNotificationOpened(
                         "GeTuiSdkDidReceivePayload", message);
             }
         }, 1000);
+
     }
 }

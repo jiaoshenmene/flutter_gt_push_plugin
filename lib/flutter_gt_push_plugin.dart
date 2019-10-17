@@ -35,6 +35,9 @@ class FlutterGtPushPlugin {
       case 'GeTuiSdkDidReceivePayload':
         delegate.GeTuiSdkDidReceiveMessage(call.arguments);
         break;
+      case 'didReceiveIncomingPushWithPayload':
+        delegate.didReceiveIncomingPushWithPayload(call.arguments);
+        break;
       default:
         throw UnsupportedError('Unrecognized Event');
     }
